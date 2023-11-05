@@ -1,4 +1,4 @@
-def registry = 'http://3.93.176.250:8082/'
+def registry = 'https://jfrogcloudaccount.jfrog.io/'
 pipeline {
     agent {
         node {
