@@ -1,6 +1,6 @@
 def registry = 'https://jfrogcloudaccount.jfrog.io'
-// def imageName = 'jfrogcloudaccount.jfrog.io/valaxy-docker-local/ttrend'
-// def version   = '2.1.2'
+def imageName = 'jfrogcloudaccount.jfrog.io/valaxy-docker-local/ttrend'
+def version   = '2.1.2'
 
 pipeline {
     agent {
@@ -73,38 +73,34 @@ pipeline {
                 }
             }   
         }
-
-
-        //     stage(" Docker Build ") {
-        //       steps {
-        //         script {
-        //            echo '<--------------- Docker Build Started --------------->'
-        //            app = docker.build(imageName+":"+version)
-        //            echo '<--------------- Docker Build Ends --------------->'
-        //         }
-        //       }
-        //     }
-
-        //             stage (" Docker Publish "){
-        //         steps {
-        //             script {
-        //                echo '<--------------- Docker Publish Started --------------->'  
-        //                 docker.withRegistry(registry, 'docker-cred'){
-        //                     app.push()
-        //                 }    
-        //                echo '<--------------- Docker Publish Ended --------------->'  
-        //             }
-        //         }
-        //     }
-
+        stage(" Docker Build ") {
+            steps {
+                script {
+                    echo '<--------------- Docker Build Started --------------->'
+                    app = docker.build(imageName+":"+version)
+                    echo '<--------------- Docker Build Ends --------------->'
+                }
+            }
+        }
+        stage (" Docker Publish "){
+            steps {
+                script {
+                    echo '<--------------- Docker Publish Started --------------->'  
+                    docker.withRegistry(registry, 'jfrog-cred'){
+                        app.push()
+                    }    
+                    echo '<--------------- Docker Publish Ended --------------->'  
+                }
+            }
+        }
         // stage(" Deploy ") {
-        //        steps {
-        //          script {
+        //     steps{
+        //         script {
         //             echo '<--------------- Helm Deploy Started --------------->'
         //             sh 'helm install ttrend ttrend-1.0.1.tgz'
         //             echo '<--------------- Helm deploy Ends --------------->'
-        //          }
-        //        }
-        //      }  
+        //         }
+        //     }
+        // }  
     }
 }
